@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.auction.Exception.BidExcept;
 import com.auction.Exception.BuyerExcept;
+import com.auction.Exception.DisputeExcept;
 import com.auction.Exception.ProductExcept;
 import com.auction.Utility.DB;
 import com.auction.bean.Items;
@@ -172,9 +172,21 @@ public class BuyerDAOImpl implements BuyerDAO {
 	}
 
 	@Override
-	public String RegisterDisputes() {
-		// TODO Auto-generated method stub
-		return null;
+	public String RegisterDisputes(int itemid,int user_id, String reason) throws DisputeExcept {
+		try (Connection connection = DB.getConnection()) {
+	        PreparedStatement statement = connection.prepareStatement("INSERT INTO disputes (item_id, user_id, dispute_reason) VALUES (?, ?, ?)");
+	        statement.setInt(1, itemid);
+	        statement.setInt(2, user_id);
+	        statement.setString(3, reason);
+	        int result = statement.executeUpdate();
+			if (result == 1) {
+				return " Dispute Registerd Sucessfully";
+			} else {
+				throw new DisputeExcept("Dispute Not Registerd");
+			}
+	    } catch (SQLException e) {
+			throw new DisputeExcept(e.getMessage());
+	    }
 	}
 
 }

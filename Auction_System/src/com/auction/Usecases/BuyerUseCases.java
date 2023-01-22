@@ -2,35 +2,34 @@ package com.auction.Usecases;
 
 import java.util.Scanner;
 
-import com.auction.Dao.AdminDAO;
-import com.auction.Dao.AdminDAOImpl;
+import com.auction.Dao.BuyerDAO;
+import com.auction.Dao.BuyerDAOImpl;
 import com.auction.Dao.SellerDAO;
 import com.auction.Dao.SellerDAOImpl;
 import com.auction.bean.Colors;
 import com.auction.bean.Users;
 
-
-public class SellerUseCases {
+public class BuyerUseCases extends SellerDAOImpl {
 public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println(Colors.getBbgYellow() +"Enter Seller Username: " + Colors.getReset());
+		System.out.println(Colors.getBbgYellow() +"Enter Buyer Username: " + Colors.getReset());
 		String UserName = sc.next();
 		
-		System.out.println(Colors.getBbgYellow()+"Enter Seller Password: " + Colors.getReset());
+		System.out.println(Colors.getBbgYellow()+"Enter Buyer Password: " + Colors.getReset());
 		String Password = sc.next();
 		
 		try {
 			
-			SellerDAO seller = new SellerDAOImpl();
+			BuyerDAO buyer = new BuyerDAOImpl();
 			
-			Users user = seller.SellerLogin(UserName, Password);
+			Users user = buyer.LoginBuyer(UserName, Password);
 			
 			if(user != null) {
 				System.out.println("============================================");
 				System.out.println("Login Successful");
-				System.out.println("Your Seller id is-"+user.getUserId());
+				System.out.println("Your BuerId is "+ user.getUserId());
 
 				System.out.println("============================================");
 				
@@ -38,13 +37,14 @@ public static void main(String[] args) {
 					System.out.println();
 					System.out.println("+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*");
 					System.out.println();
-					System.out.println(Colors.getBgWhite() +"Enter 1 to Create new Item"+Colors.getReset());
-					System.out.println(Colors.getBgWhite() +"Enter 2 to Update auction of a Item"+Colors.getReset());
-					System.out.println(Colors.getBgWhite() +"Enter 3 to Remove A Item."+Colors.getReset());
-					System.out.println(Colors.getBgWhite() +"Enter 4 to view bid history"+Colors.getReset());
-					System.out.println(Colors.getBgWhite() +"Enter 5 to view Sales Report"+Colors.getReset());
-					System.out.println(Colors.getBgWhite() +"Enter 6 to view Sales Report"+Colors.getReset());				
-					System.out.println(Colors.getBgWhite() +"Enter 7 to Logout"+Colors.getReset());
+					
+					System.out.println(Colors.getBgWhite() +"Enter 1 to Get All Item"+Colors.getReset());
+					System.out.println(Colors.getBgWhite() +"Enter 2 to Get A Item Detail"+Colors.getReset());
+					System.out.println(Colors.getBgWhite() +"Enter 3 to Get Item By Seller."+Colors.getReset());
+					System.out.println(Colors.getBgWhite() +"Enter 4 to Get Won Item"+Colors.getReset());
+					System.out.println(Colors.getBgWhite() +"Enter 5 to Place a Bid"+Colors.getReset());	
+					System.out.println(Colors.getBgWhite() +"Enter 6 to Register a Dispute"+Colors.getReset());				
+					System.out.println(Colors.getBgWhite() +"Enter 6 to Logout"+Colors.getReset());
 					System.out.println();
 					System.out.println("+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*");
 					System.out.println();
@@ -56,17 +56,17 @@ public static void main(String[] args) {
 				
                    switch(num) {
 					
-					case 1 : CreateNewItem.main(args);
+					case 1 : GetAllItem.main(args);
 							  break;
-					case 2 : UpdateAuctionTime.main(args);
+					case 2 : GetAItemDetail.main(args);
 					  		  break;
-					case 3 : RemoveItem.main(args);
+					case 3 : GetAItembySeller.main(args);
 							  break;
-					case 4 : ViewBidHistory.main(args);
+					case 4 : WonitemsList.main(args);
 							  break;
-					case 5 : SalesReport.main(args);
+					case 5 : PlaceBid.main(args);
 					  		  break;
-					case 6 : ViewDisputes.main(args);
+					case 6 : RegisterDispute.main(args);
 			  		  break;
 					case 7 : {
 						System.out.println("============================================");
@@ -85,5 +85,6 @@ public static void main(String[] args) {
 		}
 		
 	}
+
 
 }

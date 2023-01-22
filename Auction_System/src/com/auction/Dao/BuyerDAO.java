@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.auction.Exception.BidExcept;
 import com.auction.Exception.BuyerExcept;
+import com.auction.Exception.DisputeExcept;
 import com.auction.Exception.ProductExcept;
 import com.auction.bean.Items;
 import com.auction.bean.Users;
- interface BuyerDAO {
+ public interface BuyerDAO {
 
 	public String registerBuyer(Users user)throws BuyerExcept;
 
@@ -22,8 +23,8 @@ import com.auction.bean.Users;
 	public Items getItemDetails( int ProductID)throws  ProductExcept;
 	
 	public List<Items> getWonItems(int UserId) throws ProductExcept;
-		
-	public String RegisterDisputes();
+
+	String RegisterDisputes(int itemid, int user_id, String reason) throws DisputeExcept;
 	
 }
 

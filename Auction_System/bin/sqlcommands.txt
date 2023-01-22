@@ -45,6 +45,8 @@ CREATE TABLE users (
     role ENUM('buyer','seller','admin') NOT NULL
 );
 INSERT INTO users (first_name,last_name, username,password, email, role) VALUES ('sagar','ojha','sagar', '1234', 'sagar@gmail', 'admin');
+INSERT INTO users (first_name,last_name, username,password, email, role) VALUES ('sagar','ojha','sagarS', '1234', 'sagar@gmail', 'seller');
+INSERT INTO users (first_name,last_name, username,password, email, role) VALUES ('sagar','ojha','sagarB', '1234', 'sagar@gmail', 'buyer');
 
 CREATE TABLE disputes (
     dispute_id INT PRIMARY KEY AUTO_INCREMENT,
