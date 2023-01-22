@@ -1,0 +1,59 @@
+
+
+
+
+
+
+create database Auction_System;
+
+
+
+ use Auction_System;
+
+CREATE TABLE items (
+    item_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_name VARCHAR(25) NOT NULL,
+    seller_id INT NOT NULL,
+    starting_price FLOAT NOT NULL,
+    current_bid FLOAT NOT NULL,
+    auction_start_time DATETIME NOT NULL,
+    auction_end_time DATETIME NOT NULL,
+    category VARCHAR(25) NOT NULL,
+    winner_id INT,
+    FOREIGN KEY (winner_id) REFERENCES users(user_id),
+    FOREIGN KEY (seller_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE bid_history (
+    bid_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT NOT NULL,
+    user_id INT NOT NULL,
+    bid_amount FLOAT NOT NULL,
+    bid_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+
+CREATE TABLE users (
+	first_name VARCHAR(25) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(25) NOT NULL,
+    password VARCHAR(25) NOT NULL,
+    email VARCHAR(25) NOT NULL,
+    role ENUM('buyer','seller','admin') NOT NULL
+);
+INSERT INTO users (first_name,last_name, username,password, email, role) VALUES ('sagar','ojha','sagar', '1234', 'sagar@gmail', 'admin');
+
+CREATE TABLE disputes (
+    dispute_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT NOT NULL,
+    user_id INT NOT NULL,
+    dispute_reason VARCHAR(50) NOT NULL,
+    dispute_resolution VARCHAR(50),
+    resolved BOOLEAN ,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
