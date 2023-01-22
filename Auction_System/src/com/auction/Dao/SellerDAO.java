@@ -1,27 +1,24 @@
 package com.auction.Dao;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.auction.Exception.ProductExcept;
 import com.auction.Exception.SellerExcept;
-import com.auction.Exception.SoldProductDTOExcept;
 import com.auction.bean.Items;
-import com.auction.bean.Sold_items;
+import com.auction.bean.Bid;
 import com.auction.bean.Users;
 
 public interface SellerDAO {
 	
 	public Users SellerLogin(String username, String password)throws SellerExcept;
 	
-	public String RegisterSeller(Users seller);
+	public String RegisterSeller(Users seller) throws SellerExcept;
 	
-	public List<Items> CreateListofProducttoSell()throws ProductExcept;
+	public String createNewItem(Items item)throws ProductExcept;
 	
-	public String UpdateProductinList(Items product);
+	public String updateItemauctionTime(int itemId,LocalDateTime auctionStartTime, LocalDateTime auctionEndTime)throws ProductExcept;
 	
-	public String AddProducttoSell(Items product);
+	public String RemoveProductfromList(int id) throws ProductExcept;
 	
-	public String RemoveProductfromList(int id);
-	
-	public List<Sold_items> ViewSoldProductHistory() throws SoldProductDTOExcept;
+	public List<Bid> ViewSoldProductHistory() throws ProductExcept;
 }

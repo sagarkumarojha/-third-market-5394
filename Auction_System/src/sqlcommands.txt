@@ -9,44 +9,50 @@ create database Auction_System;
 
  use Auction_System;
 
+CREATE TABLE items (
+    item_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_name VARCHAR(25) NOT NULL,
+    seller_id INT NOT NULL,
+    starting_price FLOAT NOT NULL,
+    current_bid FLOAT NOT NULL,
+    auction_start_time DATETIME NOT NULL,
+    auction_end_time DATETIME NOT NULL,
+    category VARCHAR(25) NOT NULL,
+    winner_id INT,
+    FOREIGN KEY (winner_id) REFERENCES users(user_id),
+    FOREIGN KEY (seller_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE bid_history (
+    bid_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT NOT NULL,
+    user_id INT NOT NULL,
+    bid_amount FLOAT NOT NULL,
+    bid_time DATETIME NOT NULL DEFAULT CURRENT_DATETIME,
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 
 
 CREATE TABLE users (
-  id INT PRIMARY KEY,
-  username VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role ENUM('administrator', 'seller', 'buyer') NOT NULL
+	first_name VARCHAR(25) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(25) NOT NULL,
+    password VARCHAR(25) NOT NULL,
+    email VARCHAR(25) NOT NULL,
+    role ENUM('buyer','seller','admin') NOT NULL,
 );
 
-CREATE TABLE items (
-  id INT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
-  quantity INT NOT NULL,
-  seller_id INT NOT NULL,
-  FOREIGN KEY (seller_id) REFERENCES users(id)
-);
-
-CREATE TABLE sold_items (
-  id INT PRIMARY KEY,
-  item_id INT NOT NULL,
-  buyer_id INT NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
-  purchase_date DATE NOT NULL,
-  FOREIGN KEY (item_id) REFERENCES items(id),
-  FOREIGN KEY (buyer_id) REFERENCES users(id)
-);
 
 CREATE TABLE disputes (
-  id INT PRIMARY KEY,
-  item_id INT NOT NULL,
-  buyer_id INT NOT NULL,
-  seller_id INT NOT NULL,
-  description TEXT NOT NULL,
-  resolved BOOLEAN NOT NULL,
-  FOREIGN KEY (item_id) REFERENCES items(id),
-  FOREIGN KEY (buyer_id) REFERENCES users(id),
-  FOREIGN KEY (seller_id) REFERENCES users(id)
+    dispute_id INT PRIMARY KEY AUTO_INCREMENT,
+    item_id INT NOT NULL,
+    user_id INT NOT NULL,
+    dispute_reason VARCHAR(50) NOT NULL,
+    dispute_resolution VARCHAR(50),
+    resolved BOOLEAN ,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_DATETIME
+    FOREIGN KEY (item_id) REFERENCES items(item_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
-
