@@ -5,6 +5,7 @@ import java.util.List;
 import com.auction.Exception.ProductExcept;
 import com.auction.Exception.SellerExcept;
 import com.auction.bean.Items;
+import com.auction.bean.Sells;
 import com.auction.bean.Bid;
 import com.auction.bean.Users;
 
@@ -20,5 +21,7 @@ public interface SellerDAO {
 	
 	public String RemoveProductfromList(int id) throws ProductExcept;
 	
-	public List<Bid> ViewSoldProductHistory() throws ProductExcept;
+	public List<Sells> ViewSoldProductHistory() throws ProductExcept;
+
+	public List<Bid> getBidHistory(int id);
 }

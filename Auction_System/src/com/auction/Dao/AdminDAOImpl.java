@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +13,7 @@ import com.auction.Exception.DisputeExcept;
 import com.auction.Exception.ProductExcept;
 import com.auction.Exception.SellerExcept;
 import com.auction.Utility.DB;
-import com.auction.bean.Bid;
 import com.auction.bean.Disputes;
-import com.auction.bean.Items;
 import com.auction.bean.Sells;
 import com.auction.bean.Users;
 
@@ -25,7 +22,7 @@ public class AdminDAOImpl implements AdminDAO {
 	public Users AdminLogin(String username, String password) throws AdminExcept {
 		try (Connection connection = DB.getConnection()) {
 			PreparedStatement statement = connection
-					.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ? and role = 'buyer'");
+					.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ? and role = 'admin'");
 			statement.setString(1, username);
 			statement.setString(2, password);
 			ResultSet resultSet = statement.executeQuery();
@@ -122,12 +119,7 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public List<Bid> ViewSellingReport() throws ProductExcept {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Sells> getSellingReport() throws ProductExcept {
+	public List<Sells> ViewSellingReport() throws ProductExcept {
 		try (Connection connection = DB.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement(
 					"SELECT s.username, i.item_name, u.username FROM items i INNER JOIN users s ON s.user_id = i.seller_id INNER JOIN users u ON u.user_id = i.winner_id WHERE auction_end_time < now() ORDER BY i.auction_end_time DESC");

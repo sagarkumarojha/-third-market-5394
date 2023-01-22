@@ -3,6 +3,7 @@
 
 
 
+
 create database Auction_System;
 
 
@@ -28,7 +29,7 @@ CREATE TABLE bid_history (
     item_id INT NOT NULL,
     user_id INT NOT NULL,
     bid_amount FLOAT NOT NULL,
-    bid_time DATETIME NOT NULL DEFAULT CURRENT_DATETIME,
+    bid_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (item_id) REFERENCES items(item_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
@@ -41,9 +42,9 @@ CREATE TABLE users (
     username VARCHAR(25) NOT NULL,
     password VARCHAR(25) NOT NULL,
     email VARCHAR(25) NOT NULL,
-    role ENUM('buyer','seller','admin') NOT NULL,
+    role ENUM('buyer','seller','admin') NOT NULL
 );
-
+INSERT INTO users (first_name,last_name, username,password, email, role) VALUES ('sagar','ojha','sagar', '1234', 'sagar@gmail', 'admin');
 
 CREATE TABLE disputes (
     dispute_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -52,7 +53,7 @@ CREATE TABLE disputes (
     dispute_reason VARCHAR(50) NOT NULL,
     dispute_resolution VARCHAR(50),
     resolved BOOLEAN ,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_DATETIME
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (item_id) REFERENCES items(item_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

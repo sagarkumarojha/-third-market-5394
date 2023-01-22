@@ -14,6 +14,7 @@ import com.auction.Utility.DB;
 import com.auction.bean.Users;
 import com.auction.bean.Bid;
 import com.auction.bean.Items;
+import com.auction.bean.Sells;
 
 
 public class SellerDAOImpl implements SellerDAO{
@@ -109,7 +110,7 @@ public class SellerDAOImpl implements SellerDAO{
 
 	public List<Bid> getBidHistory(int itemId) {
 	    try (Connection connection = DB.getConnection()) {
-	        PreparedStatement statement = connection.prepareStatement("SELECT * FROM bids WHERE item_id = ? ORDER BY bid_time DESC");
+	        PreparedStatement statement = connection.prepareStatement("SELECT * FROM bid_history WHERE item_id = ? ORDER BY bid_time DESC");
 	        statement.setInt(1, itemId);
 	        ResultSet resultSet = statement.executeQuery();
 	        List<Bid> bidHistory = new ArrayList<>();
@@ -125,9 +126,27 @@ public class SellerDAOImpl implements SellerDAO{
 
 
 	@Override
-	public List<Bid> ViewSoldProductHistory() throws ProductExcept {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Sells> ViewSoldProductHistory() throws ProductExcept {
+		try (Connection connection = DB.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(
+					"SELECT s.username, i.item_name, u.username FROM items i INNER JOIN users s ON s.user_id = i.seller_id INNER JOIN users u ON u.user_id = i.winner_id WHERE auction_end_time < now() ORDER BY i.auction_end_time DESC");
+			ResultSet resultSet = statement.executeQuery();
+			List<Sells> sales = new ArrayList<>();
+			while (resultSet.next()) {
+				Sells sale = new Sells();
+				sale.setSellerName( resultSet.getString("username"));
+				sale.setItemName( resultSet.getString("item_name"));
+				sale.setBuyername( resultSet.getString("username"));
+				sales.add(sale);
+			}
+			if (sales.size() < 1) {
+				throw new ProductExcept("No items");
+			} else {
+				return sales;
+			}
+		} catch (SQLException e) {
+			throw new ProductExcept(e.getMessage());
+		}
 	}
 
 
